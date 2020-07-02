@@ -26,7 +26,6 @@ const authenticateUser = async(req, res, next) => {
 
         // Parse user credentials from Authorization header
         const credentials = auth(req)
-        // console.log(req)
             
         // If the user's credentials are available...
         if (credentials) {
@@ -79,6 +78,15 @@ const authenticateUser = async(req, res, next) => {
     }
 }
 
+function isEmpty(obj) {
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            return false;
+    }
+
+    return true;
+}
 
 
-module.exports = { authenticateUser, isUniqueEmail }
+
+module.exports = { authenticateUser, isUniqueEmail, isEmpty }

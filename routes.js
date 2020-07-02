@@ -78,7 +78,7 @@ router.post('/users', [
         const newUser = await User.create(user);
 
         // Set the status to 201 Created and end the response.
-        res.status(201).end();
+        res.status(201).location(`/`).end();
     } catch (error) {
         if (error.name === 'SequelizeValidationError') {
             res.status(400).location('/').json({error: error.errors[0].message})
@@ -155,8 +155,13 @@ router.post("/courses", [
 }));
 
 router.put("/courses/:id", dataMW.authenticateUser, asyncHandler(async(req, res) => {
-    const userId = req.currentUser.dataValues.id
 
+    //ensure json is not empty
+    if(dataMW.isEmpty(req.body)) {
+        return res.status(400).json({message: "json data cannot be empty"})
+    }
+
+    const userId = req.currentUser.dataValues.id
     const courseId = req.params.id;
     const course = await Course.findByPk(courseId)
     //continues if course has been found
